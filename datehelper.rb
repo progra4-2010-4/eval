@@ -1,10 +1,4 @@
-require 'active_support/core_ext/hash'
-module I18n 
-   def p(key)
-    t(key, :default => key)
-  end 
-end
-
+require 'active_support/core_ext/hash' #requiere que se instale activesupport: `sudo gem install activesupport`
 module DateHelper
  def distance_of_time_in_words_hash(from_time, to_time, options={})
         from_time = from_time.to_time if from_time.respond_to?(:to_time)
