@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %meta{:charset=>"utf-8"}
+    %title Slackernews
+    %link{:rel=>"stylesheet", :href=>"/style.css"}
+    %link{:rel=>"stylesheet", :href=>"/coderay.css"}
+  %body
+    %header 
+      %a.branding{:href=>"/"} Slackernews
+      %nav
+        %a{:href=>"/"} Popular
+        %a{:href=>"/newest"} New
+        %a{:href=>"/submit"} Submit
+    =yield
+
