@@ -1,10 +1,9 @@
 -if logged_in? && session[:voted] && ! session[:voted].include?(t.id)
-  %form.voteform{:action=>"/threads/vote/#{t.id}"}
+  %form.voteform{:action=>"/discussions/vote/#{t.id}", :method=>"post"}
     %input.vote{:type=>"submit", :value=>"&and;"}/
 %a.title{:href=>t.url}=t.title
 %p.info 
   ="#{t.points} puntos, por <a href='/users/#{t.user.username}'>#{t.user.username}</a>"
-  ="hace #{t.when}"
-  %a{:href=>"/threads/#{t.id}"}
-    =t.comentarios.count > 0 ? " | #{t.comments.count} comentarios" : "discutir"
-
+  ="creada en #{t.created_at}"
+  %a{:href=>"/discussions/#{t.id}"}
+    =t.comments.count > 0 ? " | #{t.comments.count} comentarios" : "discutir"

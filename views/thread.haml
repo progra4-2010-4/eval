@@ -1,14 +1,14 @@
 = haml :_item, :layout=>false, :locals => {:t => @thread}
 %p= display_formatted(@thread.content)
-
-%form{:action=>"/comments", :method=>"post"}
-  %textarea{:name=>"content", :rows=>6, :cols=>60}/
-  %input{:type=>"hidden", :value=>@thread.id, :name=>"thread"}/
-  %input{:type=>"submit", :value=>"comentar"}/
+-if logged_in?
+  %form{:action=>"/comments", :method=>"post"}
+    %textarea{:name=>"content", :rows=>6, :cols=>60}
+    %input{:type=>"hidden", :value=>@thread.id, :name=>"thread"}/
+    %input{:type=>"submit", :value=>"comentar"}/
 
 %ul#comments
   -@thread.comments.all.each do |c|
     %li.comment
-      %span.info= "por #{c.user.username} hace #{c.when}"
+      %span.info= "por #{c.user.username} el #{c.created_at}"
       %p= display_formatted(c.content)
 

@@ -15,11 +15,11 @@ class User
     include DataMapper::Resource
     property :id, Serial
     property :username, String
-    has n, :threads
+    has n, :discussions
     has n, :comments
 end
 
-class Thread 
+class Discussion 
     include DataMapper::Resource
     property :id, Serial
     property :title, String, :required=>false
@@ -37,7 +37,7 @@ class Thread
     end
 
     def self.most_popular 
-        Thread.all.sort{|a,b| a.popularity <=> b.popularity }
+        Discussion.all.sort{|a,b| b.popularity <=> a.popularity }
     end
 
     def when(options={})
@@ -53,12 +53,7 @@ class Comment
     property :content, Text
 
     belongs_to :user
-    belongs_to :thread 
-    
-    def when(options={})
-        #precision=>3 is hourly precision
-        distance_of_time_in_words @created_at, DateTime.now , false , options
-    end
+    belongs_to :discussion
 end
 
 enable :sessions
@@ -109,12 +104,12 @@ end
 
 get '/' do 
     #return hottest news
-    @news = Thread.most_popular
+    @news = Discussion.most_popular
     haml :index
 end
 
 get '/newest' do 
-    @news = Thread.all :order => [:created_at.desc]
+    @news = Discussion.all :order => [:created_at.desc]
     haml :index
 end
 
@@ -124,15 +119,15 @@ get '/submit' do
     haml :submit
 end
 
-get '/threads/:id' do |thread_id|
+get '/discussions/:id' do |thread_id|
     #view comments on a thread
-    @thread = Thread.get thread_id
+    @thread = Discussion.get thread_id
     haml :thread
 end
 
 get '/users/:user' do |username|
     #get threads submitted by user
-    @news = User.first(:username=>username).threads.all
+    @news = User.first(:username=>username).discussions.all
     haml :index
 end
 
@@ -144,12 +139,12 @@ end
 
 post '/comments' do 
     #assign a comment to a thread
-    Comment.create :content=>params[:content], :thread=>Thread.get(params[:thread]), :user => User.get(session[:user_id])
-    redirect "/threads/#{params[:thread]}"
+    Comment.create :content=>params[:content], :discussion=>Discussion.get(params[:thread]), :user => User.get(session[:user_id])
+    redirect "/discussions/#{params[:thread]}"
 end
 
-post '/threads/vote/:id' do |thread_id| 
-    t = Thread.get(thread_id)
+post '/discussions/vote/:id' do |thread_id| 
+    t = Discussion.get(thread_id)
     t.points += 1
     t.save
     session[:voted] ||= []
@@ -164,20 +159,21 @@ end
 #    redirect request.referer
 #end
 
-post '/threads' do 
+post '/discussions' do 
     #create a thread, validate stuff
     @errors = []
     @errors << "Tenés que proveer o un título o una url" unless params[:title] || params[:url]
     redirect '/submit' unless @errors.empty?
 
-    t = Thread.new
+    t = Discussion.new
     t.title = params[:title] ? params[:title] : get_title(params[:url])
     t.user = User.get session[:user_id]
     t.content= params[:content] || " "
+    t.url = params[:url]
     t.save
-    t.url = params[:url] ? params[:url] : "/threads/#{t.id}"
-    t.save
-
+    unless !params[:url].empty?
+        t.update :url=>"/discussions/#{t.id}"
+    end
     redirect '/newest'
 end
 
@@ -185,10 +181,11 @@ post '/login' do
     #login the user
     u = User.first_or_create :username => params["username"]
     session[:user_id] = u.id
+    session[:voted] = []
     redirect '/'
 end
 
-post '/logout' do 
+get '/logout' do 
     session.clear
     redirect '/'
 end
