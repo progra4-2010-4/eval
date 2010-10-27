@@ -2,12 +2,13 @@ require 'sinatra'
 require 'dm-core'
 require 'dm-migrations'
 require 'dm-timestamps'
+require 'dm-aggregates'
 require 'datehelper'
 require 'hpricot'
 require 'open-uri'
 require 'coderay'
 require 'rdiscount'
-
+require 'haml'
 include DateHelper
 
 class User 
@@ -35,7 +36,7 @@ class Thread
         (@points-1) / (t+2)**1.8
     end
 
-    def most_popular 
+    def self.most_popular 
         Thread.all.sort{|a,b| a.popularity <=> b.popularity }
     end
 
@@ -46,11 +47,10 @@ class Thread
 end
 
 class Comment 
-    require DataMapper::Resource
+    include DataMapper::Resource
     property :id, Serial
-    property :points, Integer, :default=>0
     property :created_at, DateTime
-    property :text, Text
+    property :content, Text
 
     belongs_to :user
     belongs_to :thread 
@@ -61,7 +61,7 @@ class Comment
     end
 end
 
-
+enable :sessions
 configure do 
     DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
     DataMapper.auto_upgrade!
@@ -70,7 +70,9 @@ helpers do
     def logged_in? 
         !!session[:user_id]
     end
-
+    def current_user 
+        User.get(session[:user_id])
+    end
     def get_title(uri)
        begin
            doc = Hpricot open(uri).read
@@ -107,12 +109,12 @@ end
 
 get '/' do 
     #return hottest news
-    @news = Threads.most_popular
+    @news = Thread.most_popular
     haml :index
 end
 
 get '/newest' do 
-    @news = Threads.all :order => [:created_at.desc]
+    @news = Thread.all :order => [:created_at.desc]
     haml :index
 end
 
@@ -128,9 +130,9 @@ get '/threads/:id' do |thread_id|
     haml :thread
 end
 
-get '/threads/:user' do |user_id|
+get '/users/:user' do |username|
     #get threads submitted by user
-    @news = User.get(user_id).threads.all
+    @news = User.first(:username=>username).threads.all
     haml :index
 end
 
@@ -146,11 +148,27 @@ post '/comments' do
     redirect "/threads/#{params[:thread]}"
 end
 
+post '/threads/vote/:id' do |thread_id| 
+    t = Thread.get(thread_id)
+    t.points += 1
+    t.save
+    session[:voted] ||= []
+    session[:voted] << t.id
+    redirect request.referer
+end
+
+#post '/comments/vote/:id' do |comment_id| 
+#    v = Comment.get comment_id
+#    v.points += 1
+#    v.save
+#    redirect request.referer
+#end
+
 post '/threads' do 
     #create a thread, validate stuff
     @errors = []
     @errors << "Tenés que proveer o un título o una url" unless params[:title] || params[:url]
-    redirect '/submit' if @errors
+    redirect '/submit' unless @errors.empty?
 
     t = Thread.new
     t.title = params[:title] ? params[:title] : get_title(params[:url])
@@ -170,3 +188,7 @@ post '/login' do
     redirect '/'
 end
 
+post '/logout' do 
+    session.clear
+    redirect '/'
+end

@@ -1,0 +1,15 @@
+%p 
+  :markdown
+    Podés agregar una url o un título (o ambos). Si **sólo dejás el título**, se asume
+    que estás empezando una _discusión_. Si ponés un link, se tratará de extraer el título
+    de la página. *Podés dejar el contenido en blanco*
+-unless @errors.nil?
+  %span.errors= @errors.join("; ")
+%form{:action=>"/threads", :method=>"post"}
+  %label{:for=>"t"} Título
+  %input{:id=>"t", :type=>"text", :name=>"title", :placeholder=>"un título descriptivo"}/
+  %label{:for=>"u"} Url
+  %input{:id=>"u", :type=>"text", :name=>"url", :placeholder=>"compartí un link"}/
+  %label{:for=>"c"} Contenido 
+  %textarea{:id=>"c" , :rows=>"4", :cols=>"40", :name=>"content"}
+  %input{:type=>"submit", :value=>"crear"}/

@@ -9,8 +9,13 @@
     %header 
       %a.branding{:href=>"/"} Slackernews
       %nav
-        %a{:href=>"/"} Popular
-        %a{:href=>"/newest"} New
-        %a{:href=>"/submit"} Submit
+        %a{:href=>"/"} Populares
+        %a{:href=>"/newest"} Nuevas
+        -if logged_in?
+          %a{:href=>"/submit"} Agregar
+          %a.userinfo{:href=>"/users/#{current_user.username}"}=current_user.username
+          %a{:href=>"/logout"} logout
+        -else 
+          %a{:href=>"/login"} login
     =yield
 
