@@ -1,4 +1,12 @@
-require 'ideas'
+require 'slackernews'
+require 'exam'
 
-run Sinatra::Application
+map "/" do 
+    run SlackerNews 
+end
+
+map "/examen" do 
+    run Exam 
+end
+
 
