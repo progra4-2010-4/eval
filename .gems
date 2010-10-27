@@ -1,3 +1,6 @@
-sinatra
-dm-core
-dm-migrations
+sinatra --version "~> 1.0"
+dm-core --version "~> 1.0.0"
+dm-migrations --version "~> 1.0.0"
+coderay --version "~> 0.9.5"
+rdiscount --version "~> 1.6.5"
+activesupport --version "~> 3.0.0"
