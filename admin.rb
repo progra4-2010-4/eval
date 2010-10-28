@@ -12,7 +12,7 @@ end
 class Admin < Sinatra::Base
     set :views, File.dirname(__FILE__) + '/admin_views'    
     configure do 
-         DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/turnins.sqlite3"))
+         DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
          DataMapper.auto_upgrade!
     end
 
