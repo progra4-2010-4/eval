@@ -15,6 +15,8 @@
 #. /usr/share/doc/git-core/contrib/hooks/post-receive-email
 require 'rubygems'
 require 'httparty'
+require "grit"
+include Grit
 class GitPush 
     include HTTParty
     base_uri "localhost:3000/admin"
@@ -28,7 +30,11 @@ class GitPush
         end
     end
 end
-
 stdins = []; stdins << $_ while gets
+old_revision = stdins[0]
+new_revision = stdins[1]
+ref = stdins[2]
+repo = Repo.init_bare_or_open(ENV["GIT_DIR"])
+puts repo.commit(new_revision).inspect
 puts "stdins: #{stdins}"
 GitPush.report stdins.inspect
