@@ -16,6 +16,7 @@
 require 'rubygems'
 require 'httparty'
 require "grit"
+require 'json'
 include Grit
 class GitPush 
     include HTTParty
@@ -25,6 +26,7 @@ class GitPush
         options = {:query => {:payload => info} }
         begin
             res = post "/turnin", options
+            puts "Tu examen ya fue actualizado y el docente, notificado"
         rescue
             puts "No se pudo actualizar el servidor de entregas"
         end
@@ -35,6 +37,11 @@ old_revision = stdins[0]
 new_revision = stdins[1]
 ref = stdins[2]
 repo = Repo.init_bare_or_open(ENV["GIT_DIR"])
-puts repo.commit(new_revision).inspect
-puts "stdins: #{stdins}"
-GitPush.report stdins.inspect
+info = {}
+
+#populate the commit info:
+new_commit = repo.commit new_revision
+info[:commiter] = "#{new_commit.author.name} <#{new_commit.author.email}>"
+info[:when] = new_commit.date
+info[:stats] = new_commit.stats.to_hash
+GitPush.report JSON.unparse(info)

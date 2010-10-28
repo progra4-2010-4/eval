@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'dm-core'
 require 'haml'
+require 'json'
 
 class PushInfo 
     include DataMapper::Resource
@@ -16,8 +17,9 @@ class Admin < Sinatra::Base
     end
 
     get '/' do 
-        @messages = PushInfo.all
-        p @messages
+        @raw_messages = PushInfo.all
+        @messages = @raw_messages.collect {|m| JSON.parse(m.message)}
+        #p @messages
         haml :dashboard
     end
     

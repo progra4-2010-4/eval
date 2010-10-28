@@ -1,3 +1,17 @@
 %ul
-    -@messages.each do |message|
-        %li= message.message
+  -@messages.each do |message|
+    %li.studentstats 
+      %strong= message["commiter"]
+      subió en 
+      %em= message["when"]
+      lo siguiente
+      ="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
+      %ul.filestats
+        -message["stats"]["files"].each do |filestats|
+          %li
+            = "#{filestats[0]}: "
+            %span.adds="+#{filestats[1]} | "
+            %span.deletes="-#{filestats[2]}"
+
+
+
