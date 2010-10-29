@@ -1,0 +1,81 @@
+html{
+    background-color: #FAFAFA;
+}
+body{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin: 0 auto;
+    width: 700px;
+    background-color: #F6F6EF;
+}
+nav{
+   float: right;
+}
+
+a{
+ text-decoration: none;
+ color: #444;
+}
+
+label{
+    display: block;
+}
+
+.errors{
+    color: #F5001D;
+    border: 1px solid #FA7080;
+    width: 100%;
+    text-align: center;
+}
+a.title{
+    color: #F47920;
+}
+/*Los pseudo-selectores como hover sirven para responder a eventos o estados:
+ http://www.w3schools.com/CSS/css_pseudo_classes.asp*/
+a.title:hover {
+    text-shadow: #F47920 0px 0px 2px;
+}
+
+header{
+    background-color: #00A287;
+    font-family: "Courier New", courier, monospace;
+}
+
+header a{
+   color: #444;
+   text-decoration: none;
+}
+
+header a.userinfo{
+    color: #006957;
+    text-decoration: underline;
+}
+
+header a.branding{
+    font-weight: bold;
+}
+.info{
+    font-size: 0.6em;
+    color: #828282;
+}
+
+.voteform{
+    display:inline;
+}
+
+.vote{
+    border: 0;
+    font-size: 0.5em;
+    padding: 0.5px;
+    background-color: #F6F6EF;
+    -webkit-box-shadow: #444 0px 0px 2px;
+}
+
+.vote:hover {
+    box-shadow: 10px 10px 5px #444; 
+    background-color: #828282;
+}
+
+#comments{
+    list-style-type: none;
+}
+

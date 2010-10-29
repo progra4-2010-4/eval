@@ -6,4 +6,4 @@
   ="#{t.points} puntos, por <a href='/users/#{t.user.username}'>#{t.user.username}</a>"
   ="agregada el #{t.created_at.strftime(" %d/%m/%Y  a las %I:%M%p")}"
   %a{:href=>"/discussions/#{t.id}"}
-    =t.comments.count > 0 ? " | #{t.comments.count} comentarios" : "discutir"
+    =t.comments.count > 0 ? " #{t.comments.count} comentarios" : "discutir"

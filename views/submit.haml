@@ -6,10 +6,14 @@
 -if ! @errors.nil? && ! @errors.empty?
   %span.errors= @errors.join("; ")
 %form{:action=>"/discussions", :method=>"post"}
-  %label{:for=>"t"} Título
-  %input{:id=>"t", :type=>"text", :name=>"title", :placeholder=>"un título descriptivo"}/
-  %label{:for=>"u"} Url
-  %input{:id=>"u", :type=>"text", :name=>"url", :placeholder=>"compartí un link"}/
-  %label{:for=>"c"} Contenido 
-  %textarea{:id=>"c" , :rows=>"4", :cols=>"40", :name=>"content"}
-  %input{:type=>"submit", :value=>"crear"}/
+  %p
+    %label{:for=>"t"} Título
+    %input{:id=>"t", :type=>"text", :name=>"title", :placeholder=>"un título descriptivo"}/
+  %p
+    %label{:for=>"u"} Url
+    %input{:id=>"u", :type=>"text", :name=>"url", :placeholder=>"compartí un link"}/
+  %p
+    %label{:for=>"c"} Contenido 
+    %textarea{:id=>"c" , :rows=>"4", :cols=>"40", :name=>"content"}
+  %p
+    %input{:type=>"submit", :value=>"crear"}/
