@@ -4,6 +4,6 @@
 %a.title{:href=>t.url}=t.title
 %p.info 
   ="#{t.points} puntos, por <a href='/users/#{t.user.username}'>#{t.user.username}</a>"
-  ="creada en #{t.created_at}"
+  ="agregada el #{t.created_at.strftime(" %d/%m/%Y  a las %I:%M%p")}"
   %a{:href=>"/discussions/#{t.id}"}
     =t.comments.count > 0 ? " | #{t.comments.count} comentarios" : "discutir"

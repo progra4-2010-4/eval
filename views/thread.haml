@@ -9,6 +9,6 @@
 %ul#comments
   -@thread.comments.all.each do |c|
     %li.comment
-      %span.info= "por #{c.user.username} el #{c.created_at}"
+      %span.info= "por <a href='/users/#{c.user.username}'>#{c.user.username}</a> el #{c.created_at.strftime(" %d/%m/%Y  a las %I:%M%p")}"
       %p= display_formatted(c.content)
 

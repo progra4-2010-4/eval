@@ -3,7 +3,7 @@
     Podés agregar una url o un título (o ambos). Si **sólo dejás el título**, se asume
     que estás empezando una _discusión_. Si ponés un link, se tratará de extraer el título
     de la página. *Podés dejar el contenido en blanco*
--unless @errors.nil?
+-if ! @errors.nil? && ! @errors.empty?
   %span.errors= @errors.join("; ")
 %form{:action=>"/discussions", :method=>"post"}
   %label{:for=>"t"} Título

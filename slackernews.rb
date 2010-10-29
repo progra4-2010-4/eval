@@ -37,11 +37,6 @@ class Discussion
     def self.most_popular 
         Discussion.all.sort{|a,b| b.popularity <=> a.popularity }
     end
-
-    def when(options={})
-        #precision=>3 is hourly precision
-        distance_of_time_in_words @created_at, DateTime.now , false , options
-    end
 end
 
 class Comment 
@@ -55,6 +50,7 @@ class Comment
 end
 class SlackerNews < Sinatra::Base
     enable :sessions
+    set :public, File.dirname(__FILE__) + '/public'
     configure do 
         DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/development.sqlite3"))
         DataMapper.auto_upgrade!
@@ -120,12 +116,16 @@ class SlackerNews < Sinatra::Base
     get '/discussions/:id' do |thread_id|
         #view comments on a thread
         @thread = Discussion.get thread_id
+        redirect '/' if @thread.nil?
         haml :thread
     end
 
     get '/users/:user' do |username|
         #get threads submitted by user
-        @news = User.first(:username=>username).discussions.all
+        #TODO: valid user
+        u = User.first :username=>username
+        redirect '/' if u.nil?
+        @news = u.discussions.all
         haml :index
     end
 
@@ -137,7 +137,10 @@ class SlackerNews < Sinatra::Base
 
     post '/comments' do 
         #assign a comment to a thread
-        Comment.create :content=>params[:content], :discussion=>Discussion.get(params[:thread]), :user => User.get(session[:user_id])
+        thread = Discussion.get params[:thread]
+        Comment.create :content=>params[:content], :discussion=>thread, :user => User.get(session[:user_id])
+        thread.points += 1
+        thread.save
         redirect "/discussions/#{params[:thread]}"
     end
 
@@ -150,21 +153,13 @@ class SlackerNews < Sinatra::Base
         redirect request.referer
     end
 
-    #post '/comments/vote/:id' do |comment_id| 
-    #    v = Comment.get comment_id
-    #    v.points += 1
-    #    v.save
-    #    redirect request.referer
-    #end
-
     post '/discussions' do 
         #create a thread, validate stuff
         @errors = []
-        @errors << "Tenés que proveer o un título o una url" unless params[:title] || params[:url]
-        redirect '/submit' unless @errors.empty?
-
+        @errors << "Tenés que proveer o un título o una url" if params[:title].strip.empty? && params[:url].strip.empty?
+        return haml :submit unless @errors.empty?
         t = Discussion.new
-        t.title = params[:title] ? params[:title] : get_title(params[:url])
+        t.title = !params[:title].empty? ? params[:title] : get_title(params[:url])
         t.user = User.get session[:user_id]
         t.content= params[:content] || " "
         t.url = params[:url]
