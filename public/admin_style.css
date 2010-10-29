@@ -26,3 +26,8 @@ body{
 .repo{
     background-color: #FFF666;
 }
+
+.info{
+    font-size: 0.9em;
+    color: #666;
+}

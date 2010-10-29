@@ -12,9 +12,9 @@
           %strong= message["commiter"]
           subió en 
           %em= message["when"]
-          lo siguiente a
+          a
           %span.repo= message["repo"]
-          ="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
+          %p.info="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
           %ul.filestats
             -message["stats"]["files"].each do |filestats|
               %li
