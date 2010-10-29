@@ -1,0 +1,24 @@
+body{
+    width: 700px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin: 0 auto;
+}
+
+.filestats{
+    background-color: #F6F6EF;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.adds{
+    font-weight: bold;
+    color: green;
+}
+
+.deletes{
+    font-weight: bold;
+    color: red;
+}
+
+.studentstats{
+    border: 1px dotted #444;
+}

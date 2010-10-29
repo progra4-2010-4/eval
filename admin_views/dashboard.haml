@@ -1,17 +1,24 @@
-%ul
-  -@messages.each do |message|
-    %li.studentstats 
-      %strong= message["commiter"]
-      subió en 
-      %em= message["when"]
-      lo siguiente
-      ="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
-      %ul.filestats
-        -message["stats"]["files"].each do |filestats|
-          %li
-            = "#{filestats[0]}: "
-            %span.adds="+#{filestats[1]} | "
-            %span.deletes="-#{filestats[2]}"
+!!!
+%html
+  %head
+    %meta{:charset=>"utf-8"}
+    %title Examen 1 
+    %link{:rel=>"stylesheet", :href=>"/admin_style.css"}
+  %body
+    %ul
+      -@messages.each do |message|
+        %li.studentstats 
+          %strong= message["commiter"]
+          subió en 
+          %em= message["when"]
+          lo siguiente
+          ="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
+          %ul.filestats
+            -message["stats"]["files"].each do |filestats|
+              %li
+                = "#{filestats[0]}: "
+                %span.adds="+#{filestats[1]} | "
+                %span.deletes="-#{filestats[2]}"
 
 
 
