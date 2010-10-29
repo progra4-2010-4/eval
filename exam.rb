@@ -1,10 +1,10 @@
 require 'sinatra/base'
 class  Exam < Sinatra::Base
-    get '/' do 
-        "ich bin admin"
-    end
+    
+    set :views, File.dirname(__FILE__) + '/admin_views'    
+    set :public, File.dirname(__FILE__) + '/public'
 
-    get '/fr' do 
-        "je suis admin"
+    get '/' do 
+        haml :enunciado
     end
 end

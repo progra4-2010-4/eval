@@ -1,0 +1,85 @@
+!!!
+%html
+  %head
+    %meta{:charset=>"utf-8"}
+    %title Examen 1 
+    %link{:rel=>"stylesheet", :href=>"/exam_style.css"}
+  %body
+    %h1 Programación 4: Examen Parcial 1. 29 de Octubre de 2010 
+    
+    %span.important
+      :markdown
+        El examen consiste en reproducir este sitio: <http://morning-sunset-84.heroku.com/>
+
+    :markdown
+      
+      Modo de entrega
+      -------------------------------------------------
+      
+      El examen se entregará via `ssh` a un servidor git privado (mediante el comando `git push origin master`).
+      Sólo el autor del examen y yo tenemos acceso
+      a su repositorio.
+
+      Deben haber [generado](http://help.github.com/linux-key-setup/) y __entregado__ su llave pública ssh (que se encuentra en `~/.ssh/id_rsa.pub`).
+      
+      Por razones de seguridad es necesario _modificar el archivo `~/.ssh/config` y agregar lo siguiente_ :
+
+          Host lfborjas.xen.prgmr.com 
+            HostName lfborjas.xen.prgmr.com
+            Port 2888
+            User git
+
+      Ejecutar:
+        
+      <span class="thecode">git clone git@lfborjas.xen.prgmr.com:<em>TU_NUMERO_DE_CUENTA</em>.git</span>
+
+      La ejecución de ello debería resultar en algo como:
+
+          The authenticity of host 'lfborjas.xen.prgmr.com (173.245.73.211)' can't be established.
+          RSA key fingerprint is 2f:8e:8a:a0:72:f3:ad:1d:c3:d7:05:cf:d5:9b:6e:33.
+          Are you sure you want to continue connecting (yes/no)?
+      
+      **Antes de escribir `yes`** asegúrense que la segunda línea de esa salida sea _exactamente igual a lo anterior_,
+      si no lo es, escriban `no` y avísenme.
+
+      Si todo sale bien, deberían de tener una nueva carpeta cuyo nombre sea su número de cuenta y ésta contendrá ya un par
+      de archivos. _En esta carpeta desarrollarán el examen_.
+
+      Recuerden que si crean _nuevos_ archivos dentro de la carpeta deberán ejecutar `git add <ARCHIVO>` para que git
+      esté al tanto de ellos _si no ejecutan `git add` sobre un archivo, no estará incluido cuando entreguen su examen_
+
+      _Cada vez que hagan un cambio significativo_ en el código, deberán ejecutar `git commit -m "Mensaje descriptivo"` 
+      (Después de haber _agregado_ los archivos pertinentes con `git add`). Puesto que git permite tener este tipo de 
+      control sobre el código _no se aceptarán excusas de archivos perdidos por fallas técnicas o por cambios drásticos_
+
+      En cualquier momento del examen, luego de hacer `git commit`, siéntanse libres de ejecutar `git push origin master`
+      para sincronizar su repositorio local con el repositorio de entrega. _El estado de este repositorio después del 
+      último push antes de la hora de terminación del examen es el que se tomará en cuenta para revisión_. 
+     
+      Requerimientos
+      ----------------------
+
+      El sitio es una copia simplificada de [hackernews](http://news.ycombinator.com/). La mayor parte de la funcionalidad
+      es evidente. Parte del examen es poder identificar los _recursos_ que se deberán manejar y cómo hacerlo. Deberán
+      valerse de la ingeniería reversa mediante la inspección del código html generado y la funcionalidad de las páginas.
+
+      1. Un **elemento de discusión** está definido por un título o url y cierto contenido opcional. Si una url es provista
+         el vínculo de dicho elemento debe _dirigir a ella_. Si no es provista, se debe ir a la página de discusión del
+         elemento.
+      2. Existen dos _vistas_ para los elementos de discusión: en la _vista raíz_ los elementos se encuentran ordenados
+         por _popularidad_, la cual se calcula con la siguiente fórmula:
+         `Popularidad = (puntos) / (horas_desde_creación+2)^1.8`
+      2. En la segunda vista, los elementos se ordenan de manera _no creciente_ por fecha de creación.
+      3. _Sólo_ los usuarios _autenticados_ pueden _votar_ por elementos de discusión y _comentar_ en ellos. 
+      4. Tanto un _voto_ como un _comentario_ en un elemento de discusión elevan la _cantidad de puntos_ de éste.
+      2. Durante una _sesión_ un usuario sólo puede _votar una vez_ por un elemento de discusión específico. 
+
+
+
+
+
+
+        
+
+
+

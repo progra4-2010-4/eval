@@ -1,0 +1,33 @@
+body{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    width: 800px;
+    margin: 0 auto;
+}
+
+em{
+    background-color: #FFF666;
+}
+
+a{
+    color: #06F;
+    text-decoration: none;
+}
+
+
+pre{
+    background-color: ghostWhite !important;
+    border: 1px solid #DEDEDE !important;
+}
+
+.important{
+    background-color: #A4FFA4;
+    font-size: 1.3em;
+    border 1px solid #35A635;
+}
+
+.thecode{
+    font-family: "Courier New", courier, monospace;
+    font-size: 1.1em;
+    background-color: #CDFFFF;
+    border: 1px solid #35A6A6;
+}
