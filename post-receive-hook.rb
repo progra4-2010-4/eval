@@ -17,11 +17,13 @@ require 'rubygems'
 require 'httparty'
 require "grit"
 require 'json'
+require 'pathname'
 include Grit
 class GitPush 
     include HTTParty
-    base_uri "localhost:3000/admin"
-
+    #base_uri "localhost:3000/admin"
+    base_uri "http://morning-sunset-84.heroku.com/admin"
+    
     def self.report(info)
         options = {:query => {:payload => info} }
         begin
@@ -41,6 +43,7 @@ info = {}
 
 #populate the commit info:
 new_commit = repo.commit new_revision
+info[:repo] = Pathname.new(repo.path).basename.to_s.gsub(".git", "")
 info[:commiter] = "#{new_commit.author.name} <#{new_commit.author.email}>"
 info[:when] = new_commit.date
 info[:stats] = new_commit.stats.to_hash
