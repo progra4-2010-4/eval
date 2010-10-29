@@ -6,7 +6,7 @@ require 'json'
 class PushInfo 
     include DataMapper::Resource
     property :id, Serial
-    property :message, String
+    property :message, Text 
 end
 
 class Admin < Sinatra::Base
