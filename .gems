@@ -8,3 +8,4 @@ rdiscount --version "~> 1.6.5"
 hpricot --version "~> 0.8.2"
 haml --version "~> 3.0.22"
 json --version "~> 1.4.6"
+dm-postgres-adapter
