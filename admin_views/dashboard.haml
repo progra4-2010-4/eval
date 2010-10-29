@@ -5,13 +5,15 @@
     %title Examen 1 
     %link{:rel=>"stylesheet", :href=>"/admin_style.css"}
   %body
+    %h1 Consola de entregas
     %ul
       -@messages.each do |message|
         %li.studentstats 
           %strong= message["commiter"]
           subió en 
           %em= message["when"]
-          lo siguiente
+          lo siguiente a
+          %span.repo= message["repo"]
           ="#{message["stats"]["files"].length} archivos con #{message["stats"]["additions"]} adiciones y #{message["stats"]["deletions"]} borrados: "
           %ul.filestats
             -message["stats"]["files"].each do |filestats|
